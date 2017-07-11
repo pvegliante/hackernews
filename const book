@@ -1,0 +1,12 @@
+const book = [
+{
+title: 'I love React',
+isbn: 'isbn332244',
+author: 'Juan Dominguez'
+},
+{
+title: 'Moby Dick',
+isbn: 'isbn556677',
+author: 'Harrold Melvill'
+}
+]
