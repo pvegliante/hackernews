@@ -11,16 +11,19 @@ const Button = ({ onClick, className = '', children }) =>
       {children}
     </button>
 
-const Search = ({value, onChange, children}) =>
-  <form>
+const Search = ({value, onChange, onSubmit, children}) =>
+  <form onSubmit={onSubmit}>
     {children}
     <input className="box" type="text" value = {value} onChange = {onChange}/>
+    <button type="submit">
+      {children}
+    </button>
   </form>
 
 
-const Table = ({ list, pattern, onDismiss }) =>
+const Table = ({ list, onDismiss }) =>
       <div className="table">
-        { list.filter(isSearched(pattern)).map(item=>
+        { list.map(item=>
               <div key={item.objectID} className="table-row" >
                 <span style={{ width: '40%'}}>
                   <a href={item.url}>
@@ -58,10 +61,17 @@ class App extends Component {
      searchTerm: DEFAULT_QUERY,
    };
 
+    this.onSearchSubmit = this.onSearchSubmit.bind(this);
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
     this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDismiss = this.onDismiss.bind(this)
+ }
+
+ onSearchSubmit(event) {
+   const { searchTerm } = this.state;
+   this.fetchSearchTopStories(searchTerm);
+   event.preventDefault();
  }
 
  setSearchTopStories(result) {
@@ -99,11 +109,12 @@ class App extends Component {
      <div className="page">
        {/*<Search />*/}
        <div className="interactions">
-       <Search value={searchTerm} onChange={this.onSearchChange}>
+       <Search value={searchTerm} onChange={this.onSearchChange}
+         onSubmit={this.onSearchSubmit}>
           Search
        </Search>
      </div>
-     { result && <Table list={result.hits} pattern={searchTerm} onDismiss={this.onDismiss}/>}
+     { result && <Table list={result.hits} onDismiss={this.onDismiss}/>}
        </div>
    );
  }
